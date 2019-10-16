@@ -48,3 +48,8 @@
   margin-left: -7px;
   margin-top: -3px;
 }
+
+.select-container {
+  display: flex;
+  justify-content: flex-end;
+}
