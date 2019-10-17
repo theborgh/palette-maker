@@ -3,6 +3,7 @@ import './App.css';
 import {Route, Switch} from 'react-router-dom';
 
 import Palette from './Palette';
+import PaletteList from './PaletteList';
 import seedColors from './seedColors';
 import {generatePalette} from './colorHelpers';
 
@@ -21,7 +22,11 @@ class App extends Component {
     return (
       <div>
         <Switch>
-          <Route path='/' exact render={() => <h1>Palette list</h1>} />
+          <Route
+            path='/'
+            exact
+            render={() => <PaletteList palettes={seedColors} />}
+          />
           <Route
             path='/palette/:id'
             exact
@@ -34,7 +39,6 @@ class App extends Component {
             )}
           />
         </Switch>
-        <Palette palette={generatePalette(seedColors[4])} />
       </div>
     );
   }

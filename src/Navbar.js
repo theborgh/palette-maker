@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import './Navbar.css';
+import {Link} from 'react-router-dom';
 
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -41,7 +42,7 @@ export default class Navbar extends Component {
     return (
       <nav className='Navbar'>
         <div className='logo'>
-          <a href='/'>PaletteMaker</a>
+          <Link to='/'>PaletteMaker</Link>
         </div>
         <div className='slider-container'>
           <span>Level: {level}</span>
