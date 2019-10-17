@@ -40,6 +40,11 @@ class App extends Component {
               />
             )}
           />
+          <Route
+            path='/palette/:paletteId/:colorId'
+            render={() => <h1>Single color page</h1>}
+          />
+          <Route render={() => <h1>404 - Page not found!</h1>} />
         </Switch>
       </div>
     );
