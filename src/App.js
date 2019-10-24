@@ -13,23 +13,41 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      palettes: seedColors,
+    };
+
     this.findPalette = this.findPalette.bind(this);
+    this.savePalette = this.savePalette.bind(this);
   }
 
   findPalette(id) {
-    return seedColors.find(palette => palette.id === id);
+    return this.state.palettes.find(palette => palette.id === id);
+  }
+
+  savePalette(newPalette) {
+    console.log(newPalette);
+    this.setState({palettes: [...this.state.palettes, newPalette]});
   }
 
   render() {
+    const {palettes} = this.state;
+
     return (
       <div>
         <Switch>
-          <Route path='/palette/new' exact render={() => <NewPaletteForm />} />
+          <Route
+            path='/palette/new'
+            exact
+            render={routeProps => (
+              <NewPaletteForm savePalette={this.savePalette} {...routeProps} />
+            )}
+          />
           <Route
             path='/'
             exact
             render={routeProps => (
-              <PaletteList palettes={seedColors} {...routeProps} />
+              <PaletteList palettes={palettes} {...routeProps} />
             )}
           />
           <Route

@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function NewPaletteForm() {
+function NewPaletteForm(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [currentColor, setCurrentColor] = React.useState({
@@ -94,9 +94,7 @@ function NewPaletteForm() {
       );
     });
     ValidatorForm.addValidationRule('isColorUnique', value => {
-      return colors.every(
-        ({color}) => color !== currentColor.color
-      );
+      return colors.every(({color}) => color !== currentColor.color);
     });
   });
 
@@ -121,11 +119,24 @@ function NewPaletteForm() {
     setNewName(evt.target.value);
   };
 
+  const handleSubmit = () => {
+    let newName = 'new test palette';
+    const newPalette = {
+      paletteName: newName,
+      id: newName.toLowerCase().replace(/ /g, '-'),
+      colors,
+    };
+
+    props.savePalette(newPalette);
+    props.history.push('/');
+  };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position='fixed'
+        color='default'
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
@@ -143,6 +154,9 @@ function NewPaletteForm() {
           <Typography variant='h6' noWrap>
             Persistent drawer
           </Typography>
+          <Button variant='contained' color='primary' onClick={handleSubmit}>
+            Save palette
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -174,7 +188,16 @@ function NewPaletteForm() {
           onChangeComplete={updateCurrentColor}
         />
         <ValidatorForm onSubmit={addNewColor}>
-          <TextValidator value={newName} onChange={handleChange} validators={['required', 'isColorNameUnique', 'isColorUnique']} errorMessages={['Enter a color name', 'This color name is already in use', 'Color already in use']} />
+          <TextValidator
+            value={newName}
+            onChange={handleChange}
+            validators={['required', 'isColorNameUnique', 'isColorUnique']}
+            errorMessages={[
+              'Enter a color name',
+              'This color name is already in use',
+              'Color already in use',
+            ]}
+          />
           <Button
             variant='contained'
             color='primary'
