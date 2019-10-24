@@ -12,6 +12,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {ChromePicker} from 'react-color';
 import {Button} from '@material-ui/core';
+import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import DraggableColorBox from './DraggableColorBox';
 
 const drawerWidth = 400;
@@ -76,10 +77,28 @@ const useStyles = makeStyles(theme => ({
 function NewPaletteForm() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [currentColor, setCurrentColor] = React.useState('teal');
-  const [colors, setColors] = React.useState(['purple', '#e15764']);
+  const [currentColor, setCurrentColor] = React.useState({
+    name: 'somegreen',
+    color: '#3fb551',
+  });
+  const [colors, setColors] = React.useState([
+    {name: 'purple', color: 'purple'},
+    {name: 'somered', color: '#e15764'},
+  ]);
+  const [newName, setNewName] = React.useState('');
 
-  //React.useEffect( () => {//rest of the code} )
+  React.useEffect(() => {
+    ValidatorForm.addValidationRule('isColorNameUnique', value => {
+      return colors.every(
+        ({name}) => name.toLowerCase() !== value.toLowerCase()
+      );
+    });
+    ValidatorForm.addValidationRule('isColorUnique', value => {
+      return colors.every(
+        ({color}) => color !== currentColor.color
+      );
+    });
+  });
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -90,11 +109,16 @@ function NewPaletteForm() {
   };
 
   const updateCurrentColor = newColor => {
-    setCurrentColor(newColor.hex);
+    setCurrentColor({name: newName, color: newColor.hex});
   };
 
   const addNewColor = () => {
-    setColors([...colors, currentColor]);
+    setColors([...colors, {name: newName, color: currentColor.color}]);
+    setNewName('');
+  };
+
+  const handleChange = evt => {
+    setNewName(evt.target.value);
   };
 
   return (
@@ -146,19 +170,22 @@ function NewPaletteForm() {
           </Button>
         </div>
         <ChromePicker
-          color={currentColor}
+          color={currentColor.color}
           onChangeComplete={updateCurrentColor}
         />
-        <Button
-          variant='contained'
-          color='primary'
-          style={{
-            backgroundColor: currentColor,
-          }}
-          onClick={addNewColor}
-        >
-          Add color
-        </Button>
+        <ValidatorForm onSubmit={addNewColor}>
+          <TextValidator value={newName} onChange={handleChange} validators={['required', 'isColorNameUnique', 'isColorUnique']} errorMessages={['Enter a color name', 'This color name is already in use', 'Color already in use']} />
+          <Button
+            variant='contained'
+            color='primary'
+            type='submit'
+            style={{
+              backgroundColor: currentColor.color,
+            }}
+          >
+            Add color
+          </Button>
+        </ValidatorForm>
       </Drawer>
       <main
         className={clsx(classes.content, {
