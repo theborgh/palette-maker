@@ -13,6 +13,7 @@ import ColorPickerForm from './ColorPickerForm';
 import arrayMove from 'array-move';
 
 const drawerWidth = 400;
+const INITIAL_COLOR_COUNT = 3;
 
 const styles = theme => ({
   root: {
@@ -102,7 +103,9 @@ class NewPaletteForm extends Component {
   }
 
   componentDidMount() {
-    this.addRandomColor();
+    for (let i = 0; i < INITIAL_COLOR_COUNT; i++) {
+      this.addRandomColor(INITIAL_COLOR_COUNT);
+    }
   }
 
   handleDrawerOpen = () => {
@@ -154,7 +157,7 @@ class NewPaletteForm extends Component {
     // pick random color from all the existing palettes
     let allColors = this.props.palettes.map(palette => palette.colors).flat();
     const randomColor = allColors[Math.floor(Math.random() * allColors.length)];
-    this.setState(st => ({colors: [...this.state.colors, randomColor]}));
+    this.setState(st => ({colors: [...st.colors, randomColor]}));
   }
 
   render() {
