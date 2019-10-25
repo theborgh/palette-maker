@@ -90,7 +90,7 @@ class NewPaletteForm extends Component {
     this.state = {
       open: true,
 
-      colors: this.props.palettes[0].colors,
+      colors: [],
     };
 
     this.addNewColor = this.addNewColor.bind(this);
@@ -99,6 +99,10 @@ class NewPaletteForm extends Component {
     this.removeColor = this.removeColor.bind(this);
     this.clearColors = this.clearColors.bind(this);
     this.addRandomColor = this.addRandomColor.bind(this);
+  }
+
+  componentDidMount() {
+    this.addRandomColor();
   }
 
   handleDrawerOpen = () => {
@@ -150,7 +154,7 @@ class NewPaletteForm extends Component {
     // pick random color from all the existing palettes
     let allColors = this.props.palettes.map(palette => palette.colors).flat();
     const randomColor = allColors[Math.floor(Math.random() * allColors.length)];
-    this.setState({colors: [...this.state.colors, randomColor]});
+    this.setState(st => ({colors: [...this.state.colors, randomColor]}));
   }
 
   render() {
