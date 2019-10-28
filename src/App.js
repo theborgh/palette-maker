@@ -36,6 +36,7 @@ class App extends Component {
   }
 
   deletePalette(paletteId) {
+    console.log('deletePalette called with id: ', paletteId);
     this.setState(
       st => ({
         palettes: st.palettes.filter(palette => palette.id !== paletteId),
