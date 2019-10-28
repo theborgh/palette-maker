@@ -13,6 +13,7 @@ import ColorPickerForm from './ColorPickerForm';
 import arrayMove from 'array-move';
 import styles from './styles/NewPaletteFormStyles';
 import {INITIAL_COLOR_COUNT} from './constants';
+import seedColors from './seedColors';
 
 class NewPaletteForm extends Component {
   static defaultProps = {
@@ -86,6 +87,11 @@ class NewPaletteForm extends Component {
   addRandomColor() {
     // pick random color from all the existing palettes
     let allColors = this.props.palettes.map(palette => palette.colors).flat();
+
+    if (!allColors.length) {
+      allColors = seedColors.map(palette => palette.colors).flat();
+    }
+
     const randomColor = allColors[Math.floor(Math.random() * allColors.length)];
     this.setState(st => ({colors: [...st.colors, randomColor]}));
   }
