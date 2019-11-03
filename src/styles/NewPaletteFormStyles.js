@@ -1,4 +1,5 @@
 import {DRAWER_WIDTH} from '../constants';
+import sizes from './sizes';
 
 const styles = theme => ({
   root: {
@@ -9,12 +10,20 @@ const styles = theme => ({
     width: DRAWER_WIDTH,
     flexShrink: 0,
     height: '100vh',
+
+    [sizes.down('xxs')]: {
+      width: '100%',
+    },
   },
 
   drawerPaper: {
     width: DRAWER_WIDTH,
     display: 'flex',
     alignItems: 'center',
+
+    [sizes.down('xxs')]: {
+      width: '100%',
+    },
   },
 
   drawerHeader: {
@@ -35,6 +44,10 @@ const styles = theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: -DRAWER_WIDTH,
+
+    [sizes.down('xxs')]: {
+      marginLeft: '-100%',
+    },
   },
 
   contentShift: {
